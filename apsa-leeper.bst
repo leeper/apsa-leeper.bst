@@ -400,21 +400,20 @@ FUNCTION {format.confcity}    %new conference city formatting
 }
 
 FUNCTION {format.vol.num.pages}
-{ volume field.or.null
-  number empty$
+{ volume empty$
     'skip$
-    { "(" number * ")" * *
-      volume empty$
-	{ "there's a number but no volume in " cite$ * warning$ }
-	'skip$
+    { " " volume *
+      number empty$
+        'skip$
+        { "(" number * ")" * * }
       if$
     }
   if$
   pages empty$
     'skip$
     { duplicate$ empty$
-	{ pop$ format.pages }
-	{ ":~" * pages n.dashify * }
+      { pop$ format.pages }
+      { ":~" * pages n.dashify * }
       if$
     }
   if$
@@ -753,9 +752,9 @@ FUNCTION {article}
   if$
   crossref missing$
     { journal emphasize "journal" duplicate$ item.check
-      year empty$
+      volume empty$
         { ". Forthcoming" * output new.block }
-        { " " * format.vol.num.pages * output }
+        { "" * format.vol.num.pages * output }
       if$
      }
     { format.article.crossref output.nonnull
